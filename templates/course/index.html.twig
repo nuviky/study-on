@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Программы обучения по программированию{% endblock %}
+
+{% block body %}
+    <h1>Список программ обучения по программированию</h1>
+
+    {% for course in courses %}
+        <a href="{{ path('course_show', {'id': course.id}) }}">{{ course.name }}</a>
+        <div>{{ course.description }}</div>
+    {% else %}
+        <div>Доступных для прохождения курсов нет</div>
+    {% endfor %}
+    <a href="{{ path('course_new') }}">Создать новый курс</a>
+{% endblock %}

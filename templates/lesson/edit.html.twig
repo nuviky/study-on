@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Редактирование урока {{ lesson.title }}{% endblock %}
+
+{% block body %}
+    <h1>Редактирование урока {{ lesson.title }}</h1>
+
+    {{ include('lesson/_form.html.twig', {'button_label': 'Изменить урок'}) }}
+
+    <a href="{{ path('course_show', {'id': lesson.courseRelation.id}) }}">Вернуться к программе обучения</a>
+
+    {{ include('lesson/_delete_form.html.twig') }}
+{% endblock %}
