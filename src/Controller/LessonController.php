@@ -23,7 +23,7 @@ class LessonController extends AbstractController
         ]);
     }
 
-    #[Route('/new{id}', name: 'lesson_new', methods: ['GET', 'POST'])]
+    #[Route('/new/{id}', name: 'lesson_new', methods: ['GET', 'POST'])]
     public function new($id, Request $request, LessonRepository $lessonRepository, CourseRepository $courseRepository): Response
     {
         $lesson = new Lesson();
@@ -59,7 +59,7 @@ class LessonController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $lessonRepository->add($lesson);
-            return $this->redirectToRoute('course_show', ['id' => $lesson->getCourse()->getId()], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('lesson_show', ['id' => $lesson->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('lesson/edit.html.twig', [

@@ -4,16 +4,40 @@
 
 {% block body %}
     <a href="{{ path('course_index') }}">Вернуться к списку программ</a>
-    <h1>{{course.name}}</h1>
-    <div>{{course.description}}</div>
-    <div>Программа обучения:</div>
-    {% for lesson in course.lessons %}
-        <p><a href="{{ path('lesson_show', {'id': lesson.id}) }}" class="lesson-link">{{ lesson.number }}. {{ lesson.title }}</a></p>
-    {% else %}
-        <div>Уроки для данной программы обучения в разработке</div>
-    {% endfor%}
+    <div class="container">
 
-    <a href="{{ path('course_edit', {'id': course.id}) }}" class="course-edit">Редактировать программу</a>
-    <a href="{{ path('lesson_new', {'id': course.id}) }}" class="lesson-new">Добавить урок</a>
-    {{ include('course/_delete_form.html.twig') }}
+        <div class="row align-items-center">
+
+            <div class="col">
+                <div class="container">
+                    <h1>{{course.name}}</h1>
+                    <p>{{course.description}}</p>
+                    <div class="btn-group" role="group">
+                        <a href="{{ path('course_edit', {'id': course.id}) }}" class="course-edit btn btn-secondary">Редактировать программу</a>
+                        {{ include('course/_delete_form.html.twig') }}
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-auto">
+                <div class="container">
+                    <h5>Программа обучения:</h5>
+                    {% for lesson in course.lessons %}
+                        <li class="m-2">
+                            <a href="{{ path('lesson_show', {'id': lesson.id}) }}" class="lesson-link">{{ lesson.number }}. {{ lesson.title }}</a>
+                        </li>
+                    {% else %}
+                        <div>Уроки для данной программы обучения в разработке</div>
+                    {% endfor%}
+                    <a href="{{ path('lesson_new', {'id': course.id}) }}" class="lesson-new btn btn-secondary">Добавить урок</a>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+
 {% endblock %}

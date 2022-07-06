@@ -3,10 +3,18 @@
 {% block title %}{{ lesson.title }}{% endblock %}
 
 {% block body %}
-    <h1>{{ lesson.title }}</h1>
-    <a href="{{ path( 'course_show', {'id': lesson.course.id} ) }}">{{ lesson.course.name }}</a>
-    <div>{{ lesson.content }}</div>
 
-    <a href="{{ path('lesson_edit', {'id': lesson.id}) }}" class="lesson-edit">Редактировать урок</a>
-    {{ include('lesson/_delete_form.html.twig') }}
+    <div class="container w-75">
+        <h1 class="text-center">{{ lesson.title }}</h1>
+        <h3 class="text-center"><a href="{{ path( 'course_show', {'id': lesson.course.id} ) }}">{{ lesson.course.name }}</a></h3>
+        <p class="fs-5 text-center">{{ lesson.content }}</p>
+        <div class="text-center">
+            <div class="btn-group" role="group">
+                <a href="{{ path('lesson_edit', {'id': lesson.id}) }}" class="lesson-edit btn btn-secondary">Редактировать урок</a>
+                {{ include('lesson/_delete_form.html.twig') }}
+            </div>
+        </div>
+
+    </div>
+
 {% endblock %}

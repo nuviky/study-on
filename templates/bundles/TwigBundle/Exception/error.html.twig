@@ -1,0 +1,27 @@
+{# templates/bundles/TwigBundle/Exception/error.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Ошибка{% endblock %}
+
+{% block body %}
+
+    <div class="row justify-content-center">
+
+        <h1>Произошла ошибка</h1>
+
+        <p>
+            {{ status_code }}
+        </p>
+
+        <p>
+            {{ status_text }}
+        </p>
+
+        <p>
+            Проверьте URL адресс на
+            наличие ошибок или <a href="{{ path('course_index') }}">вернитесь на главную страницу</a>.
+        </p>
+
+    </div>
+
+{% endblock body %}

@@ -3,11 +3,20 @@
 {% block title %}Редактирование курса {{ course.name }}{% endblock %}
 
 {% block body %}
-    <h1>Редактирование курса {{ course.name }}</h1>
-
-    {{ include('course/_form.html.twig', {'button_label': 'Изменить курс'}) }}
 
     <a href="{{ path('course_index') }}">Вернуться к списку программ обучения</a>
 
-    {{ include('course/_delete_form.html.twig') }}
+    <div class="container w-50">
+
+        <h1>Редактирование курса {{ course.name }}</h1>
+
+        {{ include('course/_form.html.twig', {'button_label': 'Изменить курс'}) }}
+
+        <div class="mt-1">
+
+            {{ include('course/_delete_form.html.twig') }}
+
+        </div>
+
+    </div>
 {% endblock %}

@@ -109,7 +109,7 @@ class CourseTest extends AbstractTest
             $this->assertResponseOk();
 
             // Провекра количества уроков для конкретного курса
-            $lessonsCount = $crawler->filter('ol > li')->count();
+            $lessonsCount = $crawler->filter('li')->count();
             // Получаем фактическое количество уроков для данного курса из БД
             $lessonsCountFromBD = count($course->getLessons());
 
@@ -189,8 +189,8 @@ class CourseTest extends AbstractTest
             'course[description]' => 'Тестовый курс',
         ]);
         // Список ошибок
-        //$error = $crawler->filter('span.form-error-message')->first();
-        //self::assertEquals('Поле не может быть пустым', $error->text());
+        $error = $crawler->filter('.invalid-feedback')->first();
+        self::assertEquals('Поле не может быть пустым', $error->text());
 
         // Проверка передачи значения более 255 символов в поле code
         // Заполнение полей формы
@@ -204,20 +204,20 @@ class CourseTest extends AbstractTest
             'course[description]' => 'Тестовый курс',
         ]);
         // Список ошибок
-        //$error = $crawler->filter('span.form-error-message')->first();
-        //self::assertEquals('Превышено максималльное значение символов', $error->text());
+        $error = $crawler->filter('.invalid-feedback')->first();
+        self::assertEquals('Максимальное количество допустимых символов 255', $error->text());
 
 
         // Проверка на уникальность поля code
         // Заполнение полей формы
         $crawler = $client->submitForm('course-add', [
-            'course[characterCode]' => 'PPBI',
+            'course[characterCode]' => 'FDC#',
             'course[name]' => 'Новый курс',
             'course[description]' => 'Тестовый курс',
         ]);
         // Список ошибок
-        //$error = $crawler->filter('span.form-error-message')->first();
-        //self::assertEquals('Это код уже используется для другого курса.', $error->text());
+        $error = $crawler->filter('.invalid-feedback')->first();
+        self::assertEquals('Курс с данным кодом уже существует в системе', $error->text());
     }
 
     // Тест страницы добавления курса с невалидным полем name
@@ -240,8 +240,8 @@ class CourseTest extends AbstractTest
             'course[description]' => 'Тестовый курс',
         ]);
         // Список ошибок
-        //$error = $crawler->filter('span.form-error-message')->first();
-        //self::assertEquals('Поле не может быть пустым', $error->text());
+        $error = $crawler->filter('.invalid-feedback')->first();
+        self::assertEquals('Поле не может быть пустым', $error->text());
 
         // Проверка передачи значения более 255 символов в поле name
         // Заполнение полей формы
@@ -255,8 +255,8 @@ class CourseTest extends AbstractTest
             'course[description]' => 'Тестовый курс',
         ]);
         // Список ошибок
-        //$error = $crawler->filter('span.form-error-message')->first();
-        //self::assertEquals('Превышено максималльное значение символов', $error->text());
+        $error = $crawler->filter('.invalid-feedback')->first();
+        self::assertEquals('Максимальное количество допустимых символов 255', $error->text());
     }
 
     // Тест страницы добавления курса с невалидным полем description
@@ -297,8 +297,8 @@ class CourseTest extends AbstractTest
             sssssssssssssssssssssssssssssssssssssssssssssssssssss',
         ]);
         // Список ошибок
-        //$error = $crawler->filter('span.form-error-message')->first();
-        //self::assertEquals('Превышено максималльное значение символов', $error->text());
+        $error = $crawler->filter('.invalid-feedback')->first();
+        self::assertEquals('Максимальное количество допустимых символов 1000', $error->text());
     }
 
     // Тест страницы редактирование курса, а именно - изменение полей и редирект на испарвленный курс

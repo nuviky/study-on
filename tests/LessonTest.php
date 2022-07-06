@@ -137,8 +137,8 @@ class LessonTest extends AbstractTest
             'lesson[number]' => '3',
         ]);
         // Список ошибок
-        //$error = $crawler->filter('span.form-error-message')->first();
-        //self::assertEquals('Поле не может быть пустым', $error->text());
+        $error = $crawler->filter('.invalid-feedback')->first();
+        self::assertEquals('Поле не может быть пустым', $error->text());
 
         // Проверка передачи значения более 255 символов в поле code
         // Заполнение полей формы
@@ -152,8 +152,8 @@ class LessonTest extends AbstractTest
             'lesson[number]' => '13',
         ]);
         // Список ошибок
-        //$error = $crawler->filter('span.form-error-message')->first();
-        //self::assertEquals('Превышено максималльное значение символов', $error->text());
+        $error = $crawler->filter('.invalid-feedback')->first();
+        self::assertEquals('Максимальное количество допустимых символов 255', $error->text());
     }
 
     // Тест страницы добавления урока с невалидным полем content
@@ -180,8 +180,8 @@ class LessonTest extends AbstractTest
             'lesson[number]' => '13',
         ]);
         // Список ошибок
-        //$error = $crawler->filter('span.form-error-message')->first();
-        //self::assertEquals('Поле не может быть пустым', $error->text());
+        $error = $crawler->filter('.invalid-feedback')->first();
+        self::assertEquals('Поле не может быть пустым', $error->text());
     }
 
     // Тест страницы добавления урока с невалидным полем number
@@ -208,8 +208,8 @@ class LessonTest extends AbstractTest
             'lesson[number]' => '',
         ]);
         // Список ошибок
-        //$error = $crawler->filter('span.form-error-message')->first();
-        //self::assertEquals('Поле не может быть пустым', $error->text());
+        $error = $crawler->filter('.invalid-feedback')->first();
+        self::assertEquals('Поле не может быть пустым', $error->text());
 
         // Проверка передачи значения неверной валидации номера
         // Заполнение полей формы
@@ -219,8 +219,8 @@ class LessonTest extends AbstractTest
             'lesson[number]' => 'sdk1',
         ]);
         // Список ошибок
-        //$error = $crawler->filter('span.form-error-message')->first();
-        //self::assertEquals('This value is not valid.', $error->text());
+        $error = $crawler->filter('.invalid-feedback')->first();
+        self::assertEquals('Please enter a number.', $error->text());
     }
 
     // Тест страницы редактирование урока, а именно - изменение полей и редирект на испарвленный урок

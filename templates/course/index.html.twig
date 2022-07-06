@@ -3,8 +3,9 @@
 {% block title %}Программы обучения по программированию{% endblock %}
 
 {% block body %}
+
     <div class="container w-25">
-        <h1 class="">Список программ обучения по программированию</h1>
+        <h1 >Список программ обучения по программированию</h1>
 
         {% for course in courses %}
             <div class="card">
@@ -16,7 +17,7 @@
         {% else %}
             <div>Доступных для прохождения курсов нет</div>
         {% endfor %}
-        <a href="{{ path('course_new') }}" class="btn course-new">Создать новый курс</a>
+        <a href="{{ path('course_new') }}" class="course-new btn btn-secondary mt-2">Создать новый курс</a>
     </div>
 
 {% endblock %}

@@ -19,7 +19,7 @@ class CourseType extends AbstractType
             ->add('characterCode', TextType::class, [
                 'label' => 'Код курса',
                 'constraints' => [
-                    new NotBlank(message: 'Введите название урока'),
+                    new NotBlank(message: 'Поле не может быть пустым'),
                     new Length(
                         max: 255,
                         maxMessage: 'Максимальное количество допустимых символов 255',
@@ -29,7 +29,7 @@ class CourseType extends AbstractType
             ->add('name', TextType::class, [
                 'label' => 'Название курса',
                 'constraints' => [
-                    new NotBlank(message: 'Введите название урока'),
+                    new NotBlank(message: 'Поле не может быть пустым'),
                     new Length(
                         max: 255,
                         maxMessage: 'Максимальное количество допустимых символов 255',
@@ -40,7 +40,7 @@ class CourseType extends AbstractType
                 'label' => 'Описание курса',
                 'required' => 'false',
                 'constraints' => [
-                    new NotBlank(message: 'Введите описание урока'),
+                    new NotBlank(message: 'Поле не может быть пустым'),
                     new Length(
                         max: 1000,
                         maxMessage: 'Максимальное количество допустимых символов 1000',

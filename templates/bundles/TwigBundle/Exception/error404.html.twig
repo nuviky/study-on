@@ -1,6 +1,19 @@
 {# templates/bundles/TwigBundle/Exception/error404.html.twig #}
 {% extends 'base.html.twig' %}
-<div class="container-fluid">
-    <h1>Ошибка </h1>
-    
-</div>
+
+{% block title %}Ошибка 404{% endblock %}
+
+{% block body %}
+
+    <div class="row justify-content-center">
+
+        <h1>Страница не найдена</h1>
+
+        <p>
+            Запрошенная страница не найдена. Проверьте URL адресс на
+            наличие ошибок или <a href="{{ path('course_index') }}">вернитесь на главную страницу</a>.
+        </p>
+
+    </div>
+
+{% endblock body %}
