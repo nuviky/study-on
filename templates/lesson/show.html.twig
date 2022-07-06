@@ -4,9 +4,9 @@
 
 {% block body %}
     <h1>{{ lesson.title }}</h1>
-    <a href="{{ path( 'course_show', {'id': lesson.courseRelation.id} ) }}">{{ lesson.courseRelation.name }}</a>
-    <div>{{ lesson.lessonContent }}</div>
+    <a href="{{ path( 'course_show', {'id': lesson.course.id} ) }}">{{ lesson.course.name }}</a>
+    <div>{{ lesson.content }}</div>
 
-    <a href="{{ path('lesson_edit', {'id': lesson.id}) }}">Редактировать урок</a>
+    <a href="{{ path('lesson_edit', {'id': lesson.id}) }}" class="lesson-edit">Редактировать урок</a>
     {{ include('lesson/_delete_form.html.twig') }}
 {% endblock %}

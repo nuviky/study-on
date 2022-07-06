@@ -37,13 +37,13 @@ class LessonType extends AbstractType
                     ),
                 ]
             ])
-            ->add('lessonContent', TextareaType::class, [
+            ->add('content', TextareaType::class, [
                 'label' => 'Описание урока',
                 'constraints' => [
                     new NotBlank(message: 'Введите описание урока'),
                 ]
             ])
-            ->add('lessonNumber', NumberType::class, [
+            ->add('number', NumberType::class, [
                 'label' => 'Номер урока',
                 'constraints' => [
                     new NotBlank(message: 'Введите номер урока'),
@@ -54,9 +54,9 @@ class LessonType extends AbstractType
                     )
                 ]
             ])
-            ->add('courseRelation', HiddenType::class)
+            ->add('course', HiddenType::class)
         ;
-        $builder->get('courseRelation')->addModelTransformer($this->transformer);
+        $builder->get('course')->addModelTransformer($this->transformer);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

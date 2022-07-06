@@ -18,7 +18,7 @@ class CourseToStringTransformer implements DataTransformerInterface
 
     public function transform($course): string
     {
-        if($course === null){
+        if ($course === null) {
             return '';
         }
         return $course->getId();
@@ -26,11 +26,11 @@ class CourseToStringTransformer implements DataTransformerInterface
 
     public function reverseTransform($courseId): ?Course
     {
-        if (!$courseId){
+        if (!$courseId) {
             return null;
         }
         $course = $this->entityManager->getRepository(Course::class)->find($courseId);
-        if ($course === null){
+        if ($course === null) {
             throw new TransformationFailedException(sprintf(
                 'Курс с id "%s" не существует',
                 $courseId

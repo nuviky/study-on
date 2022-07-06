@@ -29,7 +29,8 @@ class Course
     #[ORM\Column(type: 'string', length: 1000, nullable: true)]
     private $description;
 
-    #[ORM\OneToMany(mappedBy: 'courseRelation', targetEntity: Lesson::class, cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'course', targetEntity: Lesson::class, cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OrderBy(['number' => 'ASC'])]
     private $lessons;
 
     public function __construct()
@@ -90,7 +91,7 @@ class Course
     {
         if (!$this->lessons->contains($lesson)) {
             $this->lessons[] = $lesson;
-            $lesson->setCourseRelation($this);
+            $lesson->setCourse($this);
         }
 
         return $this;
@@ -100,8 +101,8 @@ class Course
     {
         if ($this->lessons->removeElement($lesson)) {
             // set the owning side to null (unless already changed)
-            if ($lesson->getCourseRelation() === $this) {
-                $lesson->setCourseRelation(null);
+            if ($lesson->getCourse() === $this) {
+                $lesson->setCourse(null);
             }
         }
 

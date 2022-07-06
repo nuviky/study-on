@@ -7,13 +7,13 @@
     <h1>{{course.name}}</h1>
     <div>{{course.description}}</div>
     <div>Программа обучения:</div>
-    {% for lesson in course.lessons|sort((a, b) => a.lessonNumber <=> b.lessonNumber)%}
-        <p><a href="{{ path('lesson_show', {'id': lesson.id}) }}">{{ lesson.lessonNumber }}. {{ lesson.title }}</a></p>
+    {% for lesson in course.lessons %}
+        <p><a href="{{ path('lesson_show', {'id': lesson.id}) }}" class="lesson-link">{{ lesson.number }}. {{ lesson.title }}</a></p>
     {% else %}
         <div>Уроки для данной программы обучения в разработке</div>
     {% endfor%}
 
-    <a href="{{ path('course_edit', {'id': course.id}) }}">Редактировать программу</a>
-    <a href="{{ path('lesson_new', {'id': course.id}) }}">Добавить урок</a>
+    <a href="{{ path('course_edit', {'id': course.id}) }}" class="course-edit">Редактировать программу</a>
+    <a href="{{ path('lesson_new', {'id': course.id}) }}" class="lesson-new">Добавить урок</a>
     {{ include('course/_delete_form.html.twig') }}
 {% endblock %}

@@ -27,7 +27,7 @@ class LessonController extends AbstractController
     public function new($id, Request $request, LessonRepository $lessonRepository, CourseRepository $courseRepository): Response
     {
         $lesson = new Lesson();
-        $lesson->setCourseRelation($courseRepository->find($id));
+        $lesson->setCourse($courseRepository->find($id));
         $form = $this->createForm(LessonType::class, $lesson);
         $form->handleRequest($request);
 
@@ -59,7 +59,7 @@ class LessonController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $lessonRepository->add($lesson);
-            return $this->redirectToRoute('course_show', ['id' => $lesson->getCourseRelation()->getId()], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('course_show', ['id' => $lesson->getCourse()->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('lesson/edit.html.twig', [
@@ -75,6 +75,6 @@ class LessonController extends AbstractController
             $lessonRepository->remove($lesson);
         }
 
-        return $this->redirectToRoute('course_show', ['id' => $lesson->getCourseRelation()->getId()], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('course_show', ['id' => $lesson->getCourse()->getId()], Response::HTTP_SEE_OTHER);
     }
 }

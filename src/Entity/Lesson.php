@@ -18,15 +18,15 @@ class Lesson
     private $title;
 
     #[ORM\Column(type: 'text')]
-    private $lessonContent;
+    private $content;
 
     #[ORM\Column(type: 'integer')]
     #[Assert\Range(min: 0, max: 10000)]
-    private $lessonNumber;
+    private $number;
 
     #[ORM\ManyToOne(targetEntity: Course::class, cascade: ['persist'], inversedBy: 'lessons')]
     #[ORM\JoinColumn(nullable: false)]
-    private $courseRelation;
+    private $course;
 
     public function getId(): ?int
     {
@@ -45,38 +45,38 @@ class Lesson
         return $this;
     }
 
-    public function getLessonContent(): ?string
+    public function getContent(): ?string
     {
-        return $this->lessonContent;
+        return $this->content;
     }
 
-    public function setLessonContent(string $lessonContent): self
+    public function setContent(string $content): self
     {
-        $this->lessonContent = $lessonContent;
+        $this->content = $content;
 
         return $this;
     }
 
-    public function getLessonNumber(): ?int
+    public function getNumber(): ?int
     {
-        return $this->lessonNumber;
+        return $this->number;
     }
 
-    public function setLessonNumber(int $lessonNumber): self
+    public function setNumber(int $number): self
     {
-        $this->lessonNumber = $lessonNumber;
+        $this->number = $number;
 
         return $this;
     }
 
-    public function getCourseRelation(): ?Course
+    public function getCourse(): ?Course
     {
-        return $this->courseRelation;
+        return $this->course;
     }
 
-    public function setCourseRelation(?Course $courseRelation): self
+    public function setCourse(?Course $course): self
     {
-        $this->courseRelation = $courseRelation;
+        $this->course = $course;
 
         return $this;
     }
