@@ -7,6 +7,7 @@ use App\Form\LessonType;
 use App\Repository\CourseRepository;
 use App\Repository\LessonRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,6 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class LessonController extends AbstractController
 {
     #[Route('/', name: 'lesson_index', methods: ['GET'])]
+    #[isGranted('ROLE_USER')]
     public function index(LessonRepository $lessonRepository): Response
     {
         return $this->render('lesson/index.html.twig', [
@@ -24,8 +26,13 @@ class LessonController extends AbstractController
     }
 
     #[Route('/new/{id}', name: 'lesson_new', methods: ['GET', 'POST'])]
-    public function new($id, Request $request, LessonRepository $lessonRepository, CourseRepository $courseRepository): Response
-    {
+    #[isGranted('ROLE_SUPER_ADMIN')]
+    public function new(
+        $id,
+        Request $request,
+        LessonRepository $lessonRepository,
+        CourseRepository $courseRepository
+    ): Response {
         $lesson = new Lesson();
         $lesson->setCourse($courseRepository->find($id));
         $form = $this->createForm(LessonType::class, $lesson);
@@ -52,6 +59,7 @@ class LessonController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'lesson_edit', methods: ['GET', 'POST'])]
+    #[isGranted('ROLE_SUPER_ADMIN')]
     public function edit(Request $request, Lesson $lesson, LessonRepository $lessonRepository): Response
     {
         $form = $this->createForm(LessonType::class, $lesson);
@@ -69,9 +77,10 @@ class LessonController extends AbstractController
     }
 
     #[Route('/{id}', name: 'lesson_delete', methods: ['POST'])]
+    #[isGranted('ROLE_SUPER_ADMIN')]
     public function delete(Request $request, Lesson $lesson, LessonRepository $lessonRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$lesson->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $lesson->getId(), $request->request->get('_token'))) {
             $lessonRepository->remove($lesson);
         }
 

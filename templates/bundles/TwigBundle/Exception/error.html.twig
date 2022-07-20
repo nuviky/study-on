@@ -5,16 +5,16 @@
 
 {% block body %}
 
-    <div class="row justify-content-center">
+    <div class="container w-50 text-center">
 
         <h1>Произошла ошибка</h1>
 
         <p>
-            {{ status_code }}
+            Ошибка: {{ status_code }}
         </p>
 
         <p>
-            {{ status_text }}
+            {{ exception.getMessage }}
         </p>
 
         <p>

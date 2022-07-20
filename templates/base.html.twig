@@ -14,6 +14,30 @@
         {% endblock %}
     </head>
     <body>
+    <nav class="navbar navbar-light bg-light">
+        <div class="container-fluid">
+
+            {% if app.user %}
+                <div>
+                    {{ app.user.email }}
+                    <div class="btn-group" role="group">
+                        <a class="btn btn-secondary" href="{{ path('app_profile') }}">Профиль</a>
+                        <a class="btn btn-secondary" href="{{ path('course_index') }}">Программы</a>
+                        <a class="btn btn-secondary" href="{{ path('app_logout') }}">Выйти</a>
+                    </div>
+                </div>
+            {% else %}
+                <div>
+                    <div class="btn-group" role="group">
+                        <a class="btn btn-secondary" href="{{ path('app_login') }}">Войти</a>
+                        <a class="btn btn-secondary" href="{{ path('course_index') }}">Программы</a>
+                        <a class="btn btn-secondary" href="{{ path('app_register') }}">Регистрация</a>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </nav>
+
         {% block body %}{% endblock %}
     </body>
 </html>

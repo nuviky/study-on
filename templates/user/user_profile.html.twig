@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Профиль{% endblock %}
+
+{% block body %}
+
+    <a href="{{ path('course_index') }}">Вернуться к списку программ</a>
+    <div class="container">
+
+        <div class="row align-items-center">
+
+            <div class="col-md-auto">
+                <div class="container">
+
+                    <h5>{{ username }}</h5>
+                    <h5>{{ balance }}</h5>
+                    <h5>{{ role }}</h5>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+{% endblock %}

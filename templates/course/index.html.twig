@@ -17,7 +17,11 @@
         {% else %}
             <div>Доступных для прохождения курсов нет</div>
         {% endfor %}
-        <a href="{{ path('course_new') }}" class="course-new btn btn-secondary mt-2">Создать новый курс</a>
+
+        {% if is_granted('ROLE_SUPER_ADMIN')%}
+            <a href="{{ path('course_new') }}" class="course-new btn btn-secondary mt-2">Создать новый курс</a>
+        {% endif %}
+
     </div>
 
 {% endblock %}

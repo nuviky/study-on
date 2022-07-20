@@ -3,7 +3,6 @@
 {% block title %}{{course.name}}{% endblock %}
 
 {% block body %}
-    <a href="{{ path('course_index') }}">Вернуться к списку программ</a>
     <div class="container">
 
         <div class="row align-items-center">
@@ -12,10 +11,17 @@
                 <div class="container">
                     <h1>{{course.name}}</h1>
                     <p>{{course.description}}</p>
-                    <div class="btn-group" role="group">
-                        <a href="{{ path('course_edit', {'id': course.id}) }}" class="course-edit btn btn-secondary">Редактировать программу</a>
-                        {{ include('course/_delete_form.html.twig') }}
-                    </div>
+
+                    {% if is_granted('ROLE_SUPER_ADMIN')%}
+                        <div class="btn-group" role="group">
+                            <a href="{{ path('course_edit', {'id': course.id}) }}" class="course-edit btn btn-secondary">Редактировать программу</a>
+                            {{ include('course/_delete_form.html.twig') }}
+                        </div>
+                    {% endif %}
+
+                    {% if is_granted('ROLE_SUPER_ADMIN')%}
+
+                    {% endif %}
 
                 </div>
 
@@ -31,7 +37,9 @@
                     {% else %}
                         <div>Уроки для данной программы обучения в разработке</div>
                     {% endfor%}
-                    <a href="{{ path('lesson_new', {'id': course.id}) }}" class="lesson-new btn btn-secondary">Добавить урок</a>
+                    {% if is_granted('ROLE_SUPER_ADMIN')%}
+                        <a href="{{ path('lesson_new', {'id': course.id}) }}" class="lesson-new btn btn-secondary">Добавить урок</a>
+                    {% endif %}
                 </div>
             </div>
 
