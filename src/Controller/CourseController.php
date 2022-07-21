@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Course;
 use App\Form\CourseType;
 use App\Repository\CourseRepository;
+use App\Service\BillingClient;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,8 +16,15 @@ use Symfony\Component\Routing\Annotation\Route;
 class CourseController extends AbstractController
 {
     #[Route('/', name: 'course_index', methods: ['GET'])]
-    public function index(CourseRepository $courseRepository): Response
+    public function index(CourseRepository $courseRepository, BillingClient $client): Response
     {
+        $courses = $client->getCourses();
+        var_dump($courses);
+        if (!$this->getUser()){
+            $freeCourses = array_search(0, array_column($courses, 'type'));
+            $freeCourses_ = $courseRepository->findBy(array_column($courses, 'character_code'));
+            var_dump($freeCourses_);
+        }
         return $this->render('course/index.html.twig', [
             'courses' => $courseRepository->findAll(),
         ]);

@@ -41,7 +41,7 @@ class BillingClient
             throw new BillingUnavailableException('Сервис временно недоступен. Попробуйте авторизоваться позднее');
         }
         curl_close($ch);
-        $errors = json_decode($session, true, 512, JSON_THROW_ON_ERROR);
+        $errors = json_decode($session, true);
         if (isset($errors['code'])) {
             if ($errors['code'] === 401 || $errors['code'] === 400) {
                 throw new UserNotFoundException('Неправильная пара логин/пароль');
@@ -98,7 +98,7 @@ class BillingClient
         $session = curl_exec($ch);
 
         if ($session === false) {
-            throw new BillingUnavailableException('Сервис временно недоступен. Попробуйте повторить позднееа');
+            throw new BillingUnavailableException('Сервис временно недоступен. Попробуйте повторить позднее');
         }
         curl_close($ch);
         $errors = json_decode($session, true, 512, JSON_THROW_ON_ERROR);
@@ -127,5 +127,25 @@ class BillingClient
             'roles' => $payload['roles'],
             'exp' => $payload['exp']
         ];
+    }
+
+    public function getCourses()
+    {
+        $ch = curl_init($_ENV['BILLING_URL'] . '/api/v1/courses');
+        $options = [
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_HTTPHEADER => [
+                'Content-Type: application/json',
+            ]
+        ];
+        curl_setopt_array($ch, $options);
+        $res = curl_exec($ch);
+
+
+        if ($res === false) {
+            throw new BillingUnavailableException('Сервис временно недоступен. Попробуйте повторить позднееа');
+        }
+        curl_close($ch);
+        return json_decode($res, true);
     }
 }
