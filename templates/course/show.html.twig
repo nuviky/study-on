@@ -12,19 +12,38 @@
                     <h1>{{course.name}}</h1>
                     <p>{{course.description}}</p>
 
+                    {% if courseB['type'] == 1 and courseT is null %}
+                        <div>Вы можете купить данный курс за {{ courseB['price'] }}</div>
+                        <a data-bs-toggle="modal" data-bs-target="#myModal" id="myInput" class="btn btn-outline-secondary mt-1 mx-2" >Купить</a>
+                    {% endif %}
+
+                    {% if courseB['type'] == 2 and courseT is null %}
+                        <div>Вы можете арендовать на неделю данный курс за {{ courseB['price'] }}</div>
+                        <a data-bs-toggle="modal" data-bs-target="#myModal" id="myInput" class="btn btn-outline-secondary mt-1 mx-2" >Арендовать</a>
+                    {% endif %}
+
+                    {% if courseT and courseB['type'] == 1 %}
+                        <div>Данный курс куплен</div>
+                    {% endif %}
+
+                    {% if courseT and courseB['type'] == 2 %}
+                        <div>Данный курс арендован до {{ courseT['expires_at'] }}</div>
+                    {% endif %}
+
                     {% if is_granted('ROLE_SUPER_ADMIN')%}
                         <div class="btn-group" role="group">
                             <a href="{{ path('course_edit', {'id': course.id}) }}" class="course-edit btn btn-secondary">Редактировать программу</a>
                             {{ include('course/_delete_form.html.twig') }}
                         </div>
                     {% endif %}
-
-                    {% if is_granted('ROLE_SUPER_ADMIN')%}
-
-                    {% endif %}
-
+                    {% for message in app.flashes('notice') %}
+                        <div class="flash-notice">
+                            <div class="alert alert-success" role="alert">
+                                {{ message }}
+                            </div>
+                        </div>
+                    {% endfor %}
                 </div>
-
             </div>
 
             <div class="col-md-auto">
@@ -46,6 +65,34 @@
         </div>
 
     </div>
+
+    <div>
+        <div id="myModal" class="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="false">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Оплата доступа к курсу</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Вы уверены, что хотите оплатить данный курс?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Нет</button>
+                        <a href="{{ path('course_pay', {'id' : course.id}) }}" class="btn btn-primary">Да</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const myModal = document.getElementById('myModal');
+        const myInput = document.getElementById('myInput');
+        myModal.addEventListener('shown.bs.modal', function () {
+            myInput.focus()
+        })
+    </script>
 
 
 {% endblock %}

@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\DTO\CourseDTO;
 use App\DTO\UserDTO;
 use App\Exception\BillingUnavailableException;
 use App\Security\User;
@@ -147,5 +148,133 @@ class BillingClient
         }
         curl_close($ch);
         return json_decode($res, true);
+    }
+
+    public function getTransactions($filter, $token)
+    {
+        $urlFilters = '?';
+        if (isset($filter['type'])) {
+            $urlFilters .= 'filter[type]=' . $filter['type'] . '&';
+        }
+        if (isset($filter['course_code'])) {
+            $urlFilters .= 'filter[course_code]=' . $filter['course_code'] . '&';
+        }
+        if (isset($filter['skip_expired'])){
+            $urlFilters .= 'filter[skip_expired]=' . $filter['skip_expired'];
+        }
+        $ch = curl_init($_ENV['BILLING_URL'] . '/api/v1/transactions' . $urlFilters);
+        $options = [
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_HTTPHEADER => [
+                'Content-Type: application/json',
+                'Authorization: Bearer ' . $token
+            ]
+        ];
+        curl_setopt_array($ch, $options);
+        $res = curl_exec($ch);
+
+
+        if ($res === false) {
+            throw new BillingUnavailableException('Ошибка со стороны сервера');
+        }
+        if (isset($resJSON['code'])) {
+            throw new BillingUnavailableException('Ошибка со стороны сервера');
+        }
+        return json_decode($res, true);
+    }
+
+    public function getCourse(string $code)
+    {
+        $ch = curl_init($_ENV['BILLING_URL'] . '/api/v1/courses/' . $code);
+        $options = [
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_HTTPHEADER => [
+                'Content-Type: application/json',
+            ]
+        ];
+        curl_setopt_array($ch, $options);
+        $res = curl_exec($ch);
+
+
+        if ($res === false) {
+            throw new BillingUnavailableException('Ошибка со стороны сервера');
+        }
+        curl_close($ch);
+        return json_decode($res, true);
+    }
+
+    public function pay($course, $token)
+    {
+        $ch = curl_init($_ENV['BILLING_URL'] . '/api/v1/courses/' . $course->getCharacterCode() . '/pay');
+        $options = [
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_POST => true,
+            CURLOPT_HTTPHEADER => [
+                'Content-Type: application/json',
+                'Authorization: Bearer ' . $token
+            ]
+        ];
+        curl_setopt_array($ch, $options);
+        $res = curl_exec($ch);
+
+
+        if ($res === false) {
+            throw new BillingUnavailableException('Ошибка со стороны сервера');
+        }
+        return json_decode($res, true);
+    }
+
+    public function newCourse(User $user, CourseDTO $courseNewDto) {
+        $data = $this->serializer->serialize($courseNewDto, 'json');
+        $ch = curl_init($_ENV['BILLING_URL'] . '/api/v1/courses');
+        $options = [
+            CURLOPT_POST => true,
+            CURLOPT_POSTFIELDS => $data,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_HTTPHEADER => [
+                'Content-Type: application/json',
+                'Authorization: Bearer ' . $user->getApiToken()
+            ]
+        ];
+        curl_setopt_array($ch, $options);
+        $res = curl_exec($ch);
+
+
+        if ($res === false) {
+            throw new BillingUnavailableException('Ошибка со стороны сервера');
+        }
+        curl_close($ch);
+        $result = json_decode($res, true);
+        if (isset($result['errors'])) {
+            throw new BillingUnavailableException(json_encode($result['errors']));
+        }
+        return $result;
+    }
+
+    public function editCourse(User $user, CourseDTO $courseNewDto, $courseCode) {
+        $data = $this->serializer->serialize($courseNewDto, 'json');
+        $ch = curl_init($_ENV['BILLING_URL'] . '/api/v1/courses/' . $courseCode);
+        $options = [
+            CURLOPT_POST => true,
+            CURLOPT_POSTFIELDS => $data,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_HTTPHEADER => [
+                'Content-Type: application/json',
+                'Authorization: Bearer ' . $user->getApiToken()
+            ]
+        ];
+        curl_setopt_array($ch, $options);
+        $res = curl_exec($ch);
+
+
+        if ($res === false) {
+            throw new BillingUnavailableException('Ошибка со стороны сервера');
+        }
+        curl_close($ch);
+        $result = json_decode($res, true);
+        if (isset($result['errors'])) {
+            throw new BillingUnavailableException(json_encode($result['errors']));
+        }
+        return $result;
     }
 }

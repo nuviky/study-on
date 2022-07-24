@@ -6,12 +6,28 @@
 
     <div class="container w-25">
         <h1 >Список программ обучения по программированию</h1>
-
         {% for course in courses %}
             <div class="card">
                 <div class="card-body">
-                    <a href="{{ path('course_show', {'id': course.id}) }}" class="card-link">{{ course.name }}</a>
-                    <div>{{ course.description }}</div>
+                    <a href="{{ path('course_show', {'id': course['course'].id}) }}" class="card-link">{{ course['course'].name }}</a>
+                    <div>{{ course['course'].description }}</div>
+                    {% if course['type'] == 0 %}
+                    <div>Беспланый</div>
+                    {% elseif course['type'] == 2 %}
+                        <div>Аренда</div>
+                    {% elseif course['type'] == 1 %}
+                        <div>Покупка</div>
+                    {% endif %}
+
+                    {% if course['type'] != 0 and course['transaction']%}
+
+                        {% if course['transaction']['expires_at'] is defined and course['type'] == 2 %}
+                            <div>Арендован до {{ course['transaction']['expires_at'] }}</div>
+                        {% else %}
+                            <div>Куплен</div>
+                        {% endif %}
+
+                    {% endif %}
                 </div>
             </div>
         {% else %}
