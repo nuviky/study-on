@@ -52,6 +52,7 @@ class BillingClient
         $userDTO = $this->serializer->deserialize($session, UserDTO::class, "json");
         $user = new User();
         $user->setApiToken($userDTO->token);
+        $user->setRefreshToken($userDTO->refresh_token);
         $decodedJWT = $this->getJWT($userDTO->token);
         $user->setEmail($decodedJWT['email']);
         $user->setRoles($decodedJWT['roles']);
@@ -110,6 +111,7 @@ class BillingClient
         $userAuthDTO = $this->serializer->deserialize($session, UserDTO::class, "json");
         $user = new User();
         $user->setApiToken($userAuthDTO->token);
+        $user->setRefreshToken($userAuthDTO->refresh_token);
         $decodedJWT = $this->getJWT($userAuthDTO->token);
         $user->setEmail($decodedJWT['email']);
         $user->setRoles($decodedJWT['roles']);

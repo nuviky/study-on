@@ -2,6 +2,9 @@
 
 namespace App\Security;
 
+use App\Exception\BillingUnavailableException;
+use App\Service\BillingClient;
+use DateTime;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -11,6 +14,11 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 class UserProvider implements UserProviderInterface, PasswordUpgraderInterface
 {
+    private BillingClient $billingClient;
+    public function __construct(BillingClient $client)
+    {
+        $this->billingClient = $client;
+    }
     /**
      * Symfony calls this method if you use features like switch_user
      * or remember_me.
@@ -48,13 +56,18 @@ class UserProvider implements UserProviderInterface, PasswordUpgraderInterface
      */
     public function refreshUser(UserInterface $user): UserInterface
     {
-        if (!$user instanceof User) {
-            throw new UnsupportedUserException(sprintf('Invalid user class "%s".', get_class($user)));
+        $tokenDecoded = $this->decodeJWTToken->getJWT($user->getApiToken());
+        $tokenExp = (new DateTime())->setTimestamp($tokenDecoded['exp']);
+        $endTime = (new DateTime())->add(new \DateInterval('PT5M'));
+        if ($endTime > $tokenExp) {
+            try {
+                $refreshInfo = $this->billingClient->refreshToken($user->getRefreshToken());
+                $user->setApiToken($refreshInfo['token']);
+                $user->setRefreshToken($refreshInfo['refresh_token']);
+            } catch (BillingUnavailableException $exception) {
+                throw new \Exception($exception->getMessage());
+            }
         }
-        return $user;
-        // Return a User object after making sure its data is "fresh".
-        // Or throw a UsernameNotFoundException if the user no longer exists.
-        //throw new \Exception('TODO: fill in refreshUser() inside ' . __FILE__);
     }
 
     /**

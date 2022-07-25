@@ -15,6 +15,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     private $password;
 
+    private $refreshToken;
+
     public function getEmail(): ?string
     {
         return $this->email;
@@ -92,5 +94,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function getRefreshToken()
+    {
+        return $this->refreshToken;
+    }
+
+    public function setRefreshToken(string $refreshToken): self
+    {
+        $this->refreshToken = $refreshToken;
+        return $this;
     }
 }
